@@ -42,14 +42,24 @@ local UnitSpecific = {
 		local ptext = cFontString(self, nil, cfg.bfont, 10, cfg.fontflag, 1, 1, 1, 'RIGHT')
 		ptext:SetPoint('TOPRIGHT', self, 'BOTTOMRIGHT', 2, -3)
 		self:Tag(ptext, '[unit:PPflex]')
-
-		--[[
-		local cres = cFontString(self.Power, nil, cfg.bfont, 26, cfg.fontflag, 1, 1, 1, 'RIGHT')
-		cres:SetPoint('RIGHT', self, 'LEFT', -3, 0)
+		local cres = cFontString(self, nil, cfg.bfont, 18, cfg.fontflag, 1, 1, 1, 'LEFT')
+		cres:SetPoint('TOPLEFT', self, 'BOTTOMLEFT', 0, 0)
 		self:Tag(cres, '[color][player:Resource]')
-		local subpower = cFontString(self.Power, nil, cfg.bfont, 10, cfg.fontflag, 1, 1, 1, 'LEFT')
-		subpower:SetPoint('LEFT', self.Power, 'RIGHT', 3, 0)
+
+		local subpower = cFontString(self, nil, cfg.bfont, 10, cfg.fontflag, 1, 1, 1, 'RIGHT')
+		subpower:SetPoint('TOPRIGHT', ptext, 'BOTTOMRIGHT', 0, -3)
 		self:Tag(subpower, '[player:SubMana]')
+
+		if class == 'MONK' and not UnitHasVehicleUI('player') then
+			local staggerPercent = cFontString(self, nil, cfg.hudfont, 20, cfg.fontflag, 1, 1, 1, 'RIGHT')
+			staggerPercent:SetPoint('BOTTOMRIGHT', htext, 'BOTTOMLEFT', -5, 1)
+			self:Tag(staggerPercent, '[player:StaggerPercent]')
+
+			local staggerCurrent = cFontString(self, nil, cfg.bfont, 10, cfg.fontflag, 1, 1, 1, 'RIGHT')
+			staggerCurrent:SetPoint('BOTTOMRIGHT', staggerPercent, 'TOPRIGHT', -1, 0)
+			self:Tag(staggerCurrent, '[player:StaggerCurrent]')
+		end
+		--[[
 
 		if class == 'DEATHKNIGHT' and not UnitHasVehicleUI('player') then
 			local runes = CreateFrame('Frame', nil, self)
@@ -72,40 +82,11 @@ local UnitSpecific = {
 				i=i-1
 			end
 			self.Runes = runes
-		elseif class == 'MONK' and not UnitHasVehicleUI('player') then
-			local stagger = CreateFrame('StatusBar', nil, self)
-			stagger:SetSize(cfg.mainUF.player.width, 5)
-			stagger:SetPoint('TOP', self.Power, 'BOTTOM', 0, -4)
-			stagger.bg = fBackDrop(stagger, stagger)
-			stagger.bg = stagger:CreateTexture(nil, 'BACKGROUND')
-			stagger.bg:SetAllPoints(stagger)
-			stagger.bg:SetTexture(cfg.texture)
-			stagger.bg.multiplier = 0.3
-			self.Stagger = stagger
-
-			local staggerCurrent = cFontString(self.Stagger, nil, cfg.bfont, 10, cfg.fontflag, 1, 1, 1, 'LEFT')
-			staggerCurrent:SetPoint('LEFT', self.Stagger, 'LEFT', 1, 0)
-			self:Tag(staggerCurrent, '[player:StaggerCurrent]')
-			local staggerPercent = cFontString(self.Power, nil, cfg.bfont, 14, cfg.fontflag, 1, 1, 1, 'RIGHT')
-			staggerPercent:SetPoint('RIGHT', self, 'LEFT', -3, 0)
-			self:Tag(staggerPercent, '[player:StaggerPercent]')
 		-- elseif class == 'DRUID' then
 			-- TODO : MushroomBar?
 		-- elseif class == 'SHAMAN' then
 			-- TODO : TotemBar? like Runebar
 		end
-		]]
-
-		--[[ GCD Bar
-		local class_color = RAID_CLASS_COLORS[class]
-		local gcd = cStatusbar(self, cfg.texture, nil, cfg.mainUF.player.width, 3, class_color.r, class_color.g, class_color.b, 1)
-		gcd:SetPoint(cfg.castbar.player.position.sa, cfg.castbar.player.position.a, cfg.castbar.player.position.pa, cfg.castbar.player.position.x, cfg.castbar.player.position.y-cfg.castbar.player.height)
-		gcd.bd = fBackDrop(gcd, gcd)
-		gcd.bg = gcd:CreateTexture(nil, 'BACKGROUND')
-		gcd.bg:SetAllPoints(gcd)
-		gcd.bg:SetTexture(cfg.texture)
-		gcd.bg:SetVertexColor(class_color.r, class_color.g, class_color.b, 0.4)
-		self.GCD = gcd
 		]]
 
 		local playerIndicatorFrame = CreateFrame('Frame', nil, self)
@@ -231,10 +212,10 @@ local UnitSpecific = {
 		hctext:SetPoint('TOPRIGHT', self, 'BOTTOMRIGHT', 2, -3)
 		self:Tag(hctext, '[unit:HPcurrent]')
 
-		self.RaidTargetIndicator = self:CreateTexture(nil, "OVERLAY")
-		self.RaidTargetIndicator:SetSize(18, 18)
-		self.RaidTargetIndicator:SetAlpha(0.6)
-		self.RaidTargetIndicator:SetPoint("CENTER", self, "CENTER", 0, 0)
+		self.RaidTargetIndicator = self.Health:CreateTexture(nil, "OVERLAY")
+		self.RaidTargetIndicator:SetSize(14, 14)
+		self.RaidTargetIndicator:SetAlpha(0.7)
+		self.RaidTargetIndicator:SetPoint("CENTER", self.Health, "CENTER", 0, 0)
 
 		local unitBuff = CreateFrame('Frame', nil, self)
 		unitBuff.size = 18
@@ -281,8 +262,8 @@ local UnitSpecific = {
 
 		self.RaidTargetIndicator = self.Health:CreateTexture(nil, "OVERLAY")
 		self.RaidTargetIndicator:SetSize(14, 14)
-		self.RaidTargetIndicator:SetAlpha(0.9)
-		self.RaidTargetIndicator:SetPoint("right", self.Health, "LEFT", -4, 0)
+		self.RaidTargetIndicator:SetAlpha(0.7)
+		self.RaidTargetIndicator:SetPoint("CENTER", self.Health, "CENTER", 0, 0)
 
 		AuraTracker(self, cfg.mainUF.focus.height*2.2, 'RIGHT', self, 'LEFT', -5, 0)
 	end,
@@ -317,7 +298,7 @@ local UnitSpecific = {
 		Shared(self, ...)
 		self.unit = 'focustarget'
 
-		self:SetSize((cfg.mainUF.player.width*0.8)/3, 6)
+		self:SetSize(cfg.mainUF.focus.width*0.75, cfg.mainUF.focus.height*0.5)
 		self.Health.colorClass = false
     	self.Health.colorReaction = false
 		self.Health.colorHealth = true
@@ -671,9 +652,9 @@ oUF:Factory(function(self)
 	spawnHelper(self, 'player', cfg.mainUF.player.position.sa, cfg.mainUF.player.position.a, cfg.mainUF.player.position.pa, cfg.mainUF.player.position.x, cfg.mainUF.player.position.y)
 	spawnHelper(self, 'pet', 'BOTTOMLEFT', 'oUF_CombatHUDPlayer', 'TOPLEFT', 0, 5)
 	spawnHelper(self, 'target', 'LEFT', 'oUF_CombatHUDPlayer', 'RIGHT', 6, 0)
-	spawnHelper(self, 'targettarget', 'TOPRIGHT', 'oUF_CombatHUDTarget', 'BOTTOMRIGHT', 0, -24)
-	spawnHelper(self, 'focus', cfg.mainUF.focus.position.sa, cfg.mainUF.focus.position.a, cfg.mainUF.focus.position.pa, cfg.mainUF.focus.position.x, cfg.mainUF.focus.position.y)
-	spawnHelper(self, 'focustarget', 'TOPRIGHT', 'oUF_CombatHUDFocus','BOTTOMRIGHT', 0, -7)
+	spawnHelper(self, 'targettarget', 'TOPRIGHT', 'oUF_CombatHUDTarget', 'BOTTOMRIGHT', 0, -20)
+	spawnHelper(self, 'focus', 'CENTER', 'oUF_CombatHUDTarget', 'RIGHT', 0, 75)
+	spawnHelper(self, 'focustarget', 'TOPRIGHT', 'oUF_CombatHUDFocus','BOTTOMRIGHT', 0, -10)
 
 	self:SetActiveStyle('CombatHUD - Party') -- custom [group:party,nogroup:raid][@raid4,noexists,group:raid]show; hide
 	self:SpawnHeader('oUF_Party', nil, 'custom [group:party,nogroup:raid][@raid4,noexists,group:raid]show; hide',

@@ -25,7 +25,7 @@ cfg.mainUF = {  -- Anchor is Player unitframe
 	},
 	focus = {
 		width = 40,
-		height = 10,
+		height = 6,
 		position = { sa = 'CENTER', a = UIParent, pa = 'CENTER', x = 162, y = -20 },
 	},
 	nameplate = {
