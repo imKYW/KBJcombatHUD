@@ -1,0 +1,28 @@
+## Interface: 80100
+## Title: KBJ CombatHUD
+## Version: 8.1.5
+## Author: Kimbanjang
+## Notes: HUD for focusing combat
+## RequiredDeps: Blizzard_CombatText
+## LoadWith: Blizzard_CombatText
+
+oUF\oUF.xml
+
+Config.lua
+
+Libs\oUF_Smooth.lua
+Libs\oUF_DebuffHighlight.lua
+Libs\oUF_Experience.lua
+Libs\oUF_GCD.lua
+Libs\oUF_Freebgrid_Auras.lua
+Libs\oUF_Freebgrid_AurasList.lua
+Libs\oUF_Trinkets.lua
+Libs\oUF_PVPSpecIcons.lua
+Libs\oUF_FloatingCombatFeedback.lua
+Libs\basicCore.lua
+Libs\basicTag.lua
+Libs\extAuraFilter.lua
+Libs\extCastbar.lua
+
+Layout.lua
+NamePlate.lua
